@@ -42,6 +42,20 @@ struct PlayerLead
     }
 };
 
+void textcolor(int color) // 112 - fundal alb scris negru
+{
+    static int __BACKGROUND;
+
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
+
+
+    GetConsoleScreenBufferInfo(h, &csbiInfo);
+
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+        color + (__BACKGROUND << 4));
+}
+
 void gotoxy(short x, short y)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -336,7 +350,7 @@ void sortare(PlayerLead* p, const short n) // sorteaza leaderboard-ul dupa final
 bool final(const Player* p)
 {
     system("cls");
-    std::ifstream f("leaderboard.txt");
+    std::ifstream f("src/input/leaderboard.txt");
     short n=0;
     bool samePlayer[2] = { false,false };
     f >> n;
@@ -381,8 +395,10 @@ bool final(const Player* p)
         }
     }
     f.close();
-    std::ofstream d("leaderboard.txt");
-    std::cout << "LeaderBoard-ul este:\n";
+    std::ofstream d("src/input/leaderboard.txt");
+    textcolor(112);
+    std::cout << "LeaderBoard\n";
+    textcolor(7);
     d << n << "\n";
     for (short i = 0; i < n; i++)
     {
@@ -404,20 +420,6 @@ bool final(const Player* p)
             return false;
         }
     }
-}
-
-void textcolor(int color) // 112 - fundal alb scris negru
-{
-    static int __BACKGROUND;
-
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
-
-
-    GetConsoleScreenBufferInfo(h, &csbiInfo);
-
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
-        color + (__BACKGROUND << 4));
 }
 
 short inceput()
@@ -480,19 +482,26 @@ short inceput()
 
 bool showLeaderBoard()
 {
-    std::ifstream f("leaderboard.txt");
+    std::ifstream f("src/input/leaderboard.txt");
     std::string nume;
     short puncte;
-    short n;
+    short n=0;
     system("cls");
     textcolor(112);
     std::cout << "LeaderBoard\n";
     textcolor(7);
     f >> n;
-    for (short i=0; i < n; i++)
+    if(n!=0)
     {
-        f >> nume >> puncte;
-        std::cout << i + 1 << ". " << nume << ": " << puncte << "\n";
+        for (short i=0; i < n; i++)
+        {
+            f >> nume >> puncte;
+            std::cout << i + 1 << ". " << nume << ": " << puncte << "\n";
+        }
+    }
+    else
+    {
+        std::cout << "Nu exista playeri inregistrati\n";
     }
     f.close();
     std::cout << "Apasa enter pentru a fi dus inapoi sau esc pentru a iesii";
