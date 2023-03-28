@@ -431,7 +431,7 @@ short inceput()
     while (!gasit)
     {
         system("cls");
-        std::cout << "TicTacToe!\n\tby Tamas Andrei\n\n";
+        std::cout << "TicTacToe!\n\n\n";
         for (short i = 0; i < 3; i++)
         {
             if (culoare == i)
@@ -501,7 +501,7 @@ bool showLeaderBoard()
     }
     else
     {
-        std::cout << "Nu exista playeri inregistrati\n";
+        std::cout << "\nNu exista playeri inregistrati\n\n";
     }
     f.close();
     std::cout << "Apasa enter pentru a fi dus inapoi sau esc pentru a iesii";
