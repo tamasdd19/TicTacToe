@@ -214,7 +214,10 @@ void castig(Player* p)
             break;
         }
         else
-            (p + i)->puncte--;
+        {
+            if((p+i)->puncte > 0)
+                (p + i)->puncte--;
+        }
     }
     Rematch();
 }
