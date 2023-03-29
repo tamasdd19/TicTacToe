@@ -170,21 +170,21 @@ void Rematch()
     gotoxy(x, y);
     while (true)
     {
-        if (GetAsyncKeyState(0x41) && k == 0)//a
+        if ((GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)) && k == 0)//a
         {
             k = 1;
             x = 0;
             gotoxy(x, y);
         }
-        else if (GetAsyncKeyState(0x41) == 0)
+        else if (GetAsyncKeyState(0x41) == 0 && GetAsyncKeyState(VK_LEFT)==0)
             k = 0;
-        if (GetAsyncKeyState(0x44) && k == 0)//d
+        if ((GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT)) && k == 0)//d
         {
             k = 1;
             x = 6;
             gotoxy(x, y);
         }
-        else if (GetAsyncKeyState(0x44) == 0)
+        else if (GetAsyncKeyState(0x44) == 0 && GetAsyncKeyState(VK_RIGHT)==0) 
             k = 0;
         if (GetAsyncKeyState(VK_RETURN) && k == 0)
         {
@@ -224,10 +224,10 @@ void castig(Player* p)
 
 int mutareCursor(short x, short y)
 {
-    while (GetAsyncKeyState(0x41)) {}
-    while (GetAsyncKeyState(0x57)) {}
-    while (GetAsyncKeyState(0x53)) {}
-    while (GetAsyncKeyState(0x44)) {}
+    while (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)) {}
+    while (GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) {}
+    while (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) {}
+    while (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT)) {}
     while (GetAsyncKeyState(VK_RETURN)) {}
     
     int k = 0;
@@ -235,62 +235,53 @@ int mutareCursor(short x, short y)
     gotoxy(x, y);
     while (true)
     {
-        if (GetAsyncKeyState(0x57) && k == 0)//w
+        if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)))//w
         {
-            k = 1;
             y -= 1;
             if (y <= MIN)
             {
                 x = 4;
                 y = 1;
             }
-        
+            while (GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) {}
             gotoxy(x, y);
         }
-        else if (GetAsyncKeyState(0x57) == 0)
-            k = 0;
-        if (GetAsyncKeyState(0x41) && k == 0)//a
+        if ((GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)))//a
         {
-            k = 1;
             x -= 4;
             if (x <= MIN)
             {
                 x = 4;
                 y = 1;
             }
+            while (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)) {}
             gotoxy(x, y);
         }
-        else if (GetAsyncKeyState(0x41) == 0)
-            k = 0;
-        if (GetAsyncKeyState(0x53) && k == 0)//s
+        if ((GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)))//s
         {
-            k = 1;
             y++;
             if (y >= MAX_Y)
             {
                 x = 4;
                 y = 1;
             }
+            while (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) {}
             gotoxy(x, y);
         }
-        else if (GetAsyncKeyState(0x53) == 0)
-            k = 0;
-        if (GetAsyncKeyState(0x44) && k == 0)//d
+        if ((GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT)))//d
         {
-            k = 1;
             x += 4;
             if (x >= MAX_X)
             {
                 x = 4;
                 y = 1;
             }
+            while (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT)) {}
             gotoxy(x, y);
         }
-        else if (GetAsyncKeyState(0x44) == 0)
-            k = 0;
-        if (GetAsyncKeyState(VK_RETURN) && k == 0)
+        if (GetAsyncKeyState(VK_RETURN))
         {
-            k = 1;
+            while(GetAsyncKeyState(VK_RETURN)) {}
             break;
         }
         Sleep(150);
@@ -334,20 +325,10 @@ void init(char* a, Player* p)
 
 void sortare(PlayerLead* p, const short n) // sorteaza leaderboard-ul dupa finalul meciului
 {
-    std::vector<PlayerLead> lista_playeri;
-    lista_playeri.reserve(n);
-    for(int i=0; i<n; i++)
-        lista_playeri.emplace_back(p[i]);
-    std::sort(lista_playeri.begin(),lista_playeri.end(),[](PlayerLead p1,PlayerLead p2)
-              {
-                  return p1>p2;
-              });
-    int i=0;
-    for(PlayerLead p2 : lista_playeri)
+    std::sort(p,p+n,[](const PlayerLead& p1, const PlayerLead& p2)
     {
-        p[i]=p2;
-        i++;
-    }
+        return p1>p2;
+    });
 }
 
 bool final(const Player* p)
@@ -449,7 +430,7 @@ short inceput()
         gotoxy(0, y);
         while (true)
         {
-            if (GetAsyncKeyState(0x57))//w
+            if (GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP))//w
             {
                 y -= 1;
                 culoare--;
@@ -458,9 +439,10 @@ short inceput()
                     y = 3;
                     culoare = 0;
                 }
+                while(GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) {}
                 break;
             }
-            if (GetAsyncKeyState(0x53))//s
+            if (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN))//s
             {
                 y++;
                 culoare++;
@@ -469,6 +451,7 @@ short inceput()
                     y = 5;
                     culoare=2;
                 }
+                while(GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) {}
                 break;
             }
             if (GetAsyncKeyState(VK_RETURN))
