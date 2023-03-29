@@ -3,7 +3,6 @@
 #include <conio.h>
 #include <fstream>
 #include <algorithm>
-#include <vector>
 
 bool game;
 bool rematch;
@@ -11,7 +10,7 @@ bool rematch;
 struct Player
 {
     std::string nume;
-    char status;   // c - castigator, e - egal
+    char status;   // c - winner, e - equal
     char x0;
     int puncte;
     Player()
@@ -42,7 +41,7 @@ struct PlayerLead
     }
 };
 
-void textcolor(int color) // 112 - fundal alb scris negru
+void textcolor(int color) // 112 - white background
 {
     static int __BACKGROUND;
 
@@ -147,9 +146,9 @@ void inceputPlay(Player* p)
     resetBuffer();
     system("cls");
     std::cout << "TIC TAC TOE\n";
-    std::cout << "Player nr 1:";
+    std::cout << "Player1's name:";
     std::cin >> p->nume;
-    std::cout << "Player nr 2:";
+    std::cout << "Player2's name:";
     std::cin >> (p + 1)->nume;
     while (p->nume == (p + 1)->nume)
     {
@@ -299,7 +298,7 @@ void joc(char* a, Player* p)
     {
         system("cls");
         draw(&a[0]);
-        std::cout << "Choose your position, " << (p + i % 2)->nume << "!";
+        std::cout << (p + i % 2)->nume << "'s turn!";
         *s = mutareCursor(4, 1);
         if (a[*s] != 'X' && a[*s] != '0' && a[*s] != 'x')
             a[*s] = p[i % 2].x0;
