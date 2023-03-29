@@ -19,3 +19,4 @@ After the match, the scores will be added in the leaderboard system. This system
 
 ![LeaderBoard](https://user-images.githubusercontent.com/118727728/228670028-60d72c5b-61e9-403b-8c92-fe475e56f931.png)
 
+---
