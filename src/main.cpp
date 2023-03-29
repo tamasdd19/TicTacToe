@@ -147,16 +147,16 @@ void inceputPlay(Player* p)
     resetBuffer();
     system("cls");
     std::cout << "TIC TAC TOE\n";
-    std::cout << "Playerul nr 1:";
+    std::cout << "Player nr 1:";
     std::cin >> p->nume;
-    std::cout << "Playerul nr 2:";
+    std::cout << "Player nr 2:";
     std::cin >> (p + 1)->nume;
     while (p->nume == (p + 1)->nume)
     {
-        std::cout << "Trebuie sa fie nume diferite!\nPlayerul nr 2:";
+        std::cout << "You must choose different names!\nPlayer nr 2:";
         std::cin >> (p + 1)->nume;
     }
-    (p + 1)->x0 = '0';
+    (p + 1)->x0 = 'O';
     p->x0 = 'X';
     for(int i=0; i<2; i++)
         p[i].status='\0';
@@ -166,7 +166,7 @@ void Rematch()
 {
     int k = 0, x=0, y=6;
     std::cout << "\nRematch?\n";
-    std::cout << "DA | NU";
+    std::cout << "YES | NO";
     gotoxy(x, y);
     while (true)
     {
@@ -181,7 +181,7 @@ void Rematch()
         if ((GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT)) && k == 0)//d
         {
             k = 1;
-            x = 6;
+            x = 7;
             gotoxy(x, y);
         }
         else if (GetAsyncKeyState(0x44) == 0 && GetAsyncKeyState(VK_RIGHT)==0) 
@@ -205,12 +205,12 @@ void castig(Player* p)
     {
         if ((p + i)->status == 'c')
         {
-            std::cout << "Castigatorul este: " << (p + i)->nume;
+            std::cout << "The winner is: " << (p + i)->nume;
             (p + i)->puncte += 1;
         }
         else if ((p + i)->status == 'e')
         {
-            std::cout << "Egal!";
+            std::cout << "Draw!";
             break;
         }
         else
@@ -299,7 +299,7 @@ void joc(char* a, Player* p)
     {
         system("cls");
         draw(&a[0]);
-        std::cout << "Alege pozitia, " << (p + i % 2)->nume << "!";
+        std::cout << "Choose your position, " << (p + i % 2)->nume << "!";
         *s = mutareCursor(4, 1);
         if (a[*s] != 'X' && a[*s] != '0' && a[*s] != 'x')
             a[*s] = p[i % 2].x0;
@@ -387,11 +387,11 @@ bool final(const Player* p)
     for (short i = 0; i < n; i++)
     {
         d << p2[i].nume << " " << p2[i].puncte << "\n";
-        std::cout << p2[i].nume << " " << p2[i].puncte << " puncte\n";
+        std::cout << i+1 << ". " << p2[i].nume << ": " << p2[i].puncte << "\n";
     }
     d.close();
     delete [] p2;
-    std::cout << "Apasa enter pentru a reveni la ecranul principal sau esc pentru a iesii";
+    std::cout << "Press ENTER to go back and ESC to exit";
     while(GetAsyncKeyState(VK_RETURN)) {}
     while (true)
     {
@@ -487,10 +487,10 @@ bool showLeaderBoard()
     }
     else
     {
-        std::cout << "\nNu exista playeri inregistrati\n\n";
+        std::cout << "\nNo players registered yet\n\n";
     }
     f.close();
-    std::cout << "Apasa enter pentru a fi dus inapoi sau esc pentru a iesii";
+    std::cout << "Press ENTER to go back and ESC to exit";
     while(GetAsyncKeyState(VK_RETURN)){}
     Sleep(100);
     resetBuffer();
@@ -535,6 +535,8 @@ int main()
             goto begin;
     }
     system("cls");
+    resetBuffer();
+    while(GetAsyncKeyState(VK_RETURN)) {}
     return 0;
 }
 
