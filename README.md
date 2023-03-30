@@ -2,11 +2,8 @@ This project is my implementation of the classic game TicTacToe in C++;
 
 ---
 ## Setup
-Clone the repository, and just run the main.exe file, the game should start.<br>
-If you want to modify and recompile the program, then you should open Makefile and change the WIN_USER32 path to find your User32.lib<br>
-Your path should be similar to mine, but your windows version may differ.<br>
-You need to do that because in the project I use the **windows.h** library which needs the path to User32.lib in order to compile with Makefile.<br>
-After you've done that, just use *make run* in a terminal and everything will compile and run.
+Clone the repository, and just run the main.exe file to start the game.<br>
+If you want to make changes to the project, you can modify the main.cpp file located in src/ and in order to compile you have to use **make run** in a terminal and everything will compile and run.
 
 ---
 ##  Features
