@@ -3,7 +3,7 @@ This project is my implementation of the classic game TicTacToe in C++;
 ---
 ## Setup
 Clone the repository, and just run the main.exe file to start the game.<br>
-If you want to make changes to the project, you can modify the main.cpp file located in src/ and in order to compile you have to use **make run** in a terminal and everything will compile and run.
+If you want to make changes to the project, you can modify the main.cpp and the TicTacToe.cpp file located in src/ and in order to compile you have to use **make run** in a terminal and everything will compile and run.
 
 ---
 ##  Features
