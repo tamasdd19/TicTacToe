@@ -46,14 +46,15 @@ void gotoxy(short x, short y);
 void resetBuffer();
 void draw(char* a);
 void verificare(char* a, Player* p, bool& game);
-void inceputPlay(Player* p);
+void inceputPlay(Player* p, std::string gameMode);
 void Rematch(bool& game, bool& rematch);
 void castig(Player* p,bool& game, bool& rematch);
 int mutareCursor(short x, short y);
-void joc(char* a, Player* p, bool& game, bool& rematch);
+int randomInt();
+void joc(char* a, Player* p, bool& game, bool& rematch, std::string gameMode);
 void init(char* a, Player* p);
 void sortare(PlayerLead* p, const short n);
-bool final(const Player* p);
+bool final(const Player* p, const std::string gameMode);
 short inceput();
 bool showLeaderBoard();
 

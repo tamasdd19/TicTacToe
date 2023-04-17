@@ -31,6 +31,7 @@ void resetBuffer()
 
 void draw(char* a)
 {
+    system("cls");
     int i;
     for (i = 0; i < 9; i++)
     {
@@ -99,25 +100,37 @@ void verificare(char* a, Player* p, bool& game)
     }
 }
 
-void inceputPlay(Player* p)
+void inceputPlay(Player* p, std::string gameMode)
 {
     while (GetAsyncKeyState(VK_RETURN)) {}
     resetBuffer();
     system("cls");
     std::cout << "TIC TAC TOE\n";
-    std::cout << "Player1's name:";
-    std::cin >> p->nume;
-    std::cout << "Player2's name:";
-    std::cin >> (p + 1)->nume;
-    while (p->nume == (p + 1)->nume)
+    if(gameMode=="1v1")
     {
-        std::cout << "You must choose different names!\nPlayer nr 2:";
+        std::cout << "Player1's name:";
+        std::cin >> p->nume;
+        std::cout << "Player2's name:";
         std::cin >> (p + 1)->nume;
+        while (p->nume == (p + 1)->nume)
+        {
+            std::cout << "You must choose different names!\nPlayer nr 2:";
+            std::cin >> (p + 1)->nume;
+        }
     }
-    (p + 1)->x0 = 'O';
+    else if(gameMode=="bot")
+    {
+        std::cout << "Player's name:";
+        std::cin >> p->nume;
+        p[1].nume = "Bot";
+    }
+    p[1].x0 = 'O';
     p->x0 = 'X';
     for(int i=0; i<2; i++)
+    {
         p[i].status='\0';
+        p[i].puncte=0;
+    }
 }
 
 void Rematch(bool& game, bool& rematch)
@@ -173,8 +186,7 @@ void castig(Player* p,bool& game, bool& rematch)
         }
         else
         {
-            if((p+i)->puncte > 0)
-                (p + i)->puncte--;
+            (p + i)->puncte -= 1;
         }
     }
     Rematch(game,rematch);
@@ -248,26 +260,40 @@ int mutareCursor(short x, short y)
     return (x / 4 + 3 * y);
 }
 
-void joc(char* a, Player* p, bool& game,bool& rematch)
+int randomInt()
+{
+    srand((unsigned) time(NULL));
+    int random=rand()%9;
+    return random;
+}
+
+void joc(char* a, Player* p, bool& game,bool& rematch, std::string gameMode)
 {
     resetBuffer();
-    int* s = new int;
+    int s;
     short x = 4, y = 1;
     for (int i = 0; game; i++)
     {
-        system("cls");
         draw(&a[0]);
         std::cout << (p + i % 2)->nume << "'s turn!";
-        *s = mutareCursor(4, 1);
-        if (a[*s] != 'X' && a[*s] != '0' && a[*s] != 'x')
-            a[*s] = p[i % 2].x0;
-        else
+        s = mutareCursor(4, 1);
+        while (a[s] == 'X' || a[s] == 'O')
+            s = mutareCursor(4, 1);
+        a[s] = p[i % 2].x0;
+        verificare(a, p, game);
+        if(gameMode=="bot" && game)
+        {
             i++;
-        verificare(&a[0], &p[0],game);
+            draw(a);
+            std::cout << (p + i % 2)->nume << "'s turn!";
+            s=randomInt();
+            while(a[s] == 'X' || a[s] == 'O')
+                s=randomInt();
+            a[s] = p[i%2].x0;
+            verificare(a, p, game);
+        }
     }
-    delete s;
     resetBuffer();
-    system("cls");
     draw(a);
     std::cout << "==========\n";
     castig(p,game,rematch);
@@ -275,6 +301,7 @@ void joc(char* a, Player* p, bool& game,bool& rematch)
 
 void init(char* a, Player* p)
 {
+    while(GetAsyncKeyState(VK_RETURN)) {}
     for (int i = 0; i < 9; i++)
         a[i] = ' ';
     for (int i = 0; i < 2; i++)
@@ -289,7 +316,7 @@ void sortare(PlayerLead* p, const short n) // sorteaza leaderboard-ul dupa final
     });
 }
 
-bool final(const Player* p)
+bool final(const Player* p, const std::string gameMode)
 {
     system("cls");
     std::ifstream f("src/input/leaderboard.txt");
@@ -310,6 +337,8 @@ bool final(const Player* p)
                     if (p2[i].nume == (p + j)->nume)
                     {
                         p2[i].puncte += (p + j)->puncte;
+                        if(p2[i].puncte < 0)
+                            p2[i].puncte = 0;
                         samePlayer[j] = true;
                         break;
                     }
@@ -324,12 +353,17 @@ bool final(const Player* p)
                 p2[n].puncte = (p + i)->puncte;
                 n++;
             }
+            if(gameMode=="bot")
+                break;
         }
         sortare(p2, n);
     }
     else
     {
-        n = 2;
+        if(gameMode=="bot")
+            n=1;
+        else
+            n=2;
         for (short i = 0; i < n; i++)
         {
             p2[i].nume = (p + i)->nume;
@@ -366,15 +400,15 @@ bool final(const Player* p)
 
 short inceput()
 {
-    short k=0, y=3, MAX_Y = 6, MIN=2, culoare=0;
+    short k=0, y=3, MAX_Y = 7, MIN=2, culoare=0;
     bool gasit = false;
-    std::string optiuni[3] = { "Play","LeaderBoard","Exit" };
+    std::string optiuni[4] = { "Play 1v1","Play against Bot","LeaderBoard","Exit" };
     while(GetAsyncKeyState(VK_RETURN)) {}
     while (!gasit)
     {
         system("cls");
         std::cout << "TicTacToe!\n\n\n";
-        for (short i = 0; i < 3; i++)
+        for (short i = 0; i < 4; i++)
         {
             if (culoare == i)
             {
