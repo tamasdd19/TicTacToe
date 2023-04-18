@@ -6,9 +6,11 @@
 #include <conio.h>
 #include <fstream>
 #include <algorithm>
+#include <vector>
 
-struct Player
+class Player
 {
+public:
     std::string nume;
     char status;   // c - winner, e - equal
     char x0;
@@ -16,6 +18,46 @@ struct Player
     Player()
     {        
         puncte = 0;
+    }
+};
+
+class Bot : public Player
+{
+public:
+    std::vector<int> positionsLeft;
+
+    Bot(const Player& p)
+    {
+        positionsLeft.reserve(9);
+        for(int i=0; i<9; i++)
+            positionsLeft.emplace_back(i);
+        nume=p.nume;
+        status='\0';
+        x0='O';
+        puncte=0;
+    }
+    Bot()
+    {
+    }
+    void erasePosition(int position)
+    {
+        positionsLeft.erase(positionsLeft.begin()+position);
+    }
+    void printVector()
+    {
+        for(int i : positionsLeft)
+            std::cout << i << std::endl;
+    }
+    int findPosition(int position)
+    {
+        int contor=0;
+        for(int i : positionsLeft)
+        {
+            if(i==position)
+                break;
+            contor++;
+        }
+        return contor;
     }
 };
 
@@ -50,7 +92,7 @@ void inceputPlay(Player* p, std::string gameMode);
 void Rematch(bool& game, bool& rematch);
 void castig(Player* p,bool& game, bool& rematch);
 int mutareCursor(short x, short y);
-int randomInt();
+int randomInt(Bot* bot);
 void joc(char* a, Player* p, bool& game, bool& rematch, std::string gameMode);
 void init(char* a, Player* p);
 void sortare(PlayerLead* p, const short n);

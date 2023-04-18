@@ -260,18 +260,25 @@ int mutareCursor(short x, short y)
     return (x / 4 + 3 * y);
 }
 
-int randomInt()
-{
+int randomInt(Bot* bot)
+{                 
     srand((unsigned) time(NULL));
-    int random=rand()%9;
-    return random;
+    int random=rand()%bot->positionsLeft.size();
+    int toReturn=bot->positionsLeft[random];
+    bot->erasePosition(random);
+    return toReturn;
 }
 
-void joc(char* a, Player* p, bool& game,bool& rematch, std::string gameMode)
+void joc(char* a, Player* p, bool& game, bool& rematch, std::string gameMode)
 {
     resetBuffer();
+    Bot* bot;
     int s;
     short x = 4, y = 1;
+    if(gameMode=="bot")
+    {
+        bot = new Bot(p[1]);
+    }
     for (int i = 0; game; i++)
     {
         draw(&a[0]);
@@ -283,16 +290,17 @@ void joc(char* a, Player* p, bool& game,bool& rematch, std::string gameMode)
         verificare(a, p, game);
         if(gameMode=="bot" && game)
         {
+            bot->erasePosition(bot->findPosition(s));
             i++;
             draw(a);
             std::cout << (p + i % 2)->nume << "'s turn!";
-            s=randomInt();
-            while(a[s] == 'X' || a[s] == 'O')
-                s=randomInt();
+            s=randomInt(bot);
             a[s] = p[i%2].x0;
             verificare(a, p, game);
         }
     }
+    if(gameMode=="bot")
+        delete bot;
     resetBuffer();
     draw(a);
     std::cout << "==========\n";
@@ -440,8 +448,8 @@ short inceput()
                 culoare++;
                 if (y >= MAX_Y)
                 {
-                    y = 5;
-                    culoare=2;
+                    y = 6;
+                    culoare=3;
                 }
                 while(GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) {}
                 break;
