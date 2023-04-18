@@ -15,10 +15,7 @@ public:
     char status;   // c - winner, e - equal
     char x0;
     int puncte;
-    Player()
-    {        
-        puncte = 0;
-    }
+    Player();
 };
 
 class Bot : public Player
@@ -26,39 +23,9 @@ class Bot : public Player
 public:
     std::vector<int> positionsLeft;
 
-    Bot(const Player& p)
-    {
-        positionsLeft.reserve(9);
-        for(int i=0; i<9; i++)
-            positionsLeft.emplace_back(i);
-        nume=p.nume;
-        status='\0';
-        x0='O';
-        puncte=0;
-    }
-    Bot()
-    {
-    }
-    void erasePosition(int position)
-    {
-        positionsLeft.erase(positionsLeft.begin()+position);
-    }
-    void printVector()
-    {
-        for(int i : positionsLeft)
-            std::cout << i << std::endl;
-    }
-    int findPosition(int position)
-    {
-        int contor=0;
-        for(int i : positionsLeft)
-        {
-            if(i==position)
-                break;
-            contor++;
-        }
-        return contor;
-    }
+    Bot(const Player& p);
+    void erasePosition(int position);
+    int findPosition(int position);
 };
 
 struct PlayerLead
@@ -66,21 +33,9 @@ struct PlayerLead
     std::string nume;
     short puncte;
 
-    bool operator<(const PlayerLead& p) const
-    {
-        return(puncte < p.puncte);
-    }
-    
-    bool operator>(const PlayerLead& p) const
-    {
-        return(puncte > p.puncte);
-    }
-
-    void operator=(const PlayerLead& p)
-    {
-        nume = p.nume;
-        puncte = p.puncte;
-    }
+    bool operator<(const PlayerLead& p) const;
+    bool operator>(const PlayerLead& p) const;
+    void operator=(const PlayerLead& p);
 };
 
 void textcolor(int color);

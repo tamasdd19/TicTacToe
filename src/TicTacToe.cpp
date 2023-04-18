@@ -1,5 +1,50 @@
 #include "../include/TicTacToe.h"
 
+Player::Player()
+{
+    puncte=0;
+}
+
+Bot::Bot(const Player& p)
+{
+    positionsLeft.reserve(9);
+    for(int i=0; i<9; i++)
+        positionsLeft.emplace_back(i);
+    nume=p.nume;
+    status='\0';
+    x0='O';
+    puncte=0;
+}
+void Bot::erasePosition(int position)
+{
+    positionsLeft.erase(positionsLeft.begin()+position);
+}
+int Bot::findPosition(int position)
+{
+    int contor=0;
+    for(int i : positionsLeft)
+    {
+        if(i==position)
+            break;
+        contor++;
+    }
+    return contor;
+}
+
+bool PlayerLead::operator<(const PlayerLead& p) const
+{
+    return(puncte < p.puncte);
+}
+bool PlayerLead::operator>(const PlayerLead& p) const
+{
+    return(puncte > p.puncte);
+}
+void PlayerLead::operator=(const PlayerLead& p)
+{
+    nume = p.nume;
+    puncte = p.puncte;
+}
+
 void textcolor(int color) // 112 - white background
 {
     static int __BACKGROUND;
