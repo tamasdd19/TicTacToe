@@ -369,7 +369,26 @@ void sortare(PlayerLead* p, const short n) // sorteaza leaderboard-ul dupa final
     });
 }
 
-bool final(const Player* p, const std::string gameMode)
+bool goBackMenu()
+{
+    std::cout << "Press ENTER to go back and ESC to exit";
+    while(GetAsyncKeyState(VK_RETURN)) {}
+    Sleep(100);
+    resetBuffer();
+    while (true)
+    {
+        if (GetAsyncKeyState(VK_RETURN)) //enter
+        {
+            return true;
+        }
+        if (GetAsyncKeyState(VK_ESCAPE)) // esc
+        {
+            return false;
+        }
+    }
+}
+
+bool final(const Player* p)
 {
     system("cls");
     std::ifstream f("src/input/leaderboard.txt");
@@ -406,17 +425,12 @@ bool final(const Player* p, const std::string gameMode)
                 p2[n].puncte = (p + i)->puncte;
                 n++;
             }
-            if(gameMode=="bot")
-                break;
         }
         sortare(p2, n);
     }
     else
     {
-        if(gameMode=="bot")
-            n=1;
-        else
-            n=2;
+        n = 2;
         for (short i = 0; i < n; i++)
         {
             p2[i].nume = (p + i)->nume;
@@ -436,19 +450,7 @@ bool final(const Player* p, const std::string gameMode)
     }
     d.close();
     delete [] p2;
-    std::cout << "Press ENTER to go back and ESC to exit";
-    while(GetAsyncKeyState(VK_RETURN)) {}
-    while (true)
-    {
-        if (GetAsyncKeyState(VK_RETURN)) //enter
-        {
-            return true;
-        }
-        if (GetAsyncKeyState(VK_ESCAPE)) // esc
-        {
-            return false;
-        }
-    }
+    return goBackMenu();
 }
 
 short inceput()
@@ -535,21 +537,6 @@ bool showLeaderBoard()
         std::cout << "\nNo players registered yet\n\n";
     }
     f.close();
-    std::cout << "Press ENTER to go back and ESC to exit";
-    while(GetAsyncKeyState(VK_RETURN)){}
-    Sleep(100);
-    resetBuffer();
-    while (true)
-    {
-        if (GetAsyncKeyState(VK_RETURN)) //enter
-        {
-            while (GetAsyncKeyState(VK_RETURN)) {}
-            return true;
-        }
-        if (GetAsyncKeyState(VK_ESCAPE)) // esc
-        {
-            return false;
-        }
-    }
+    return goBackMenu();
 }
 

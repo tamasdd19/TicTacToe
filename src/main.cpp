@@ -28,7 +28,12 @@ int main()
             init(a, p);
             joc(a, p, game, rematch, optiune);
         }
-        if (final(p, optiune))
+        if(optiune=="1v1")
+        {
+            if (final(p))
+                goto begin;
+        }
+        else
             goto begin;
     }
     system("cls");

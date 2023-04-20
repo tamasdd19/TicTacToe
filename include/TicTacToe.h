@@ -51,8 +51,9 @@ int randomInt(Bot* bot);
 void joc(char* a, Player* p, bool& game, bool& rematch, std::string gameMode);
 void init(char* a, Player* p);
 void sortare(PlayerLead* p, const short n);
-bool final(const Player* p, const std::string gameMode);
+bool final(const Player* p);
 short inceput();
 bool showLeaderBoard();
+bool goBackMenu();
 
 #endif
