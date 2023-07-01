@@ -1,5 +1,5 @@
 clean:
-	-rm main
+	del main.exe
 
 all: clean
 	g++ -o main.exe src/main.cpp src/TicTacToe.cpp

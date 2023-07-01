@@ -422,7 +422,7 @@ bool final(const Player* p)
             if (!samePlayer[i])
             {
                 p2[n].nume = (p + i)->nume;
-                p2[n].puncte = (p + i)->puncte;
+                p2[n].puncte = ((p + i)->puncte < 0) ? 0 : (p + i)->puncte;
                 n++;
             }
         }
@@ -434,7 +434,7 @@ bool final(const Player* p)
         for (short i = 0; i < n; i++)
         {
             p2[i].nume = (p + i)->nume;
-            p2[i].puncte = (p + i)->puncte;
+            p2[i].puncte = ((p + i)->puncte < 0) ? 0 : (p + i)->puncte;
         }
     }
     f.close();
@@ -539,4 +539,3 @@ bool showLeaderBoard()
     f.close();
     return goBackMenu();
 }
-
